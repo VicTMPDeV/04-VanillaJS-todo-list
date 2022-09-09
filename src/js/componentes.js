@@ -1,18 +1,34 @@
-import '../css/componentes.css';
-// import webpacklogo from '../assets/img/webpack-logo.png';
+import { Todo } from "./classes";
 
+//HTML References
+const divTodoList = document.querySelector('.todo-list');
+const txtInput = document.querySelector('.new-todo');
 
-export const saludar = ( nombre = 'sin nombre' ) => {
-    console.log('Creando etiqueta h1');
+//Functions
+export const createTodoTemplate = ( task ) => {
 
-    const h1 = document.createElement('h1');
-    h1.innerText = `Hola ${ nombre }`;
+    const todoElement = `
+        <li class="${(task.completed)?'completed':''}" data-id="${task.id}">
+            <div class="view">
+                <input class="toggle" type="checkbox" ${(task.completed)?'checked':''}>
+                <label>${task.todo}</label>
+                <button class="destroy"></button>
+            </div>
+            <input class="edit" value="Create a TodoMVC template">
+        </li>
+    `
+    const container = document.createElement('div');
+    container.innerHTML = todoElement;
 
-    document.body.append( h1 );
+    divTodoList.append(container.firstElementChild); //EFECTO COLATERAL -> Quizá sería responsabilidad de otra función?
 
-    
-    // Img
-    // const img = document.createElement('img');
-    // img.src = webpacklogo;
-    // document.body.append( img );
+    return container.firstElementChild;
 }
+
+//Events
+txtInput.addEventListener('keyup', (event) => {
+    if(event.keyCode === 13 && txtInput.value.length > 0) {
+        const addTodo = new Todo( txtInput.value );
+        // console.log(txtInput.value)
+    }
+})
